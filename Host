@@ -1,5 +1,4 @@
 import java.util.*;
-
 class Host {
 private int hostId;
 private String name;
