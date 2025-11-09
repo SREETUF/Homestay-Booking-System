@@ -1,0 +1,13 @@
+class Cancellation {
+private Booking booking;
+private double refundAmount;
+public Cancellation(Booking booking) {
+this.booking = booking;
+}
+public void processCancellation() {
+double total = booking.calculateAmount();
+refundAmount = total * 0.5; // Example: 50% refund
+booking.getListing().setAvailable(true);
+System.out.println("Booking Cancelled. Refund Amount: Rs." + refundAmount);
+}
+}
