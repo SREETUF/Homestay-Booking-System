@@ -1,0 +1,17 @@
+class Review {
+private Guest guest;
+private Listing listing;
+private int rating;
+private String comment;
+public Review(Guest guest, Listing listing, int rating, String comment) {
+this.guest = guest;
+this.listing = listing;
+this.rating = rating;
+this.comment = comment;
+}
+public int getRating() { return rating; }
+@Override
+public String toString() {
+return guest.getName() + " rated " + rating + "/5 - " + comment;
+}
+}
