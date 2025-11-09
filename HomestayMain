@@ -1,0 +1,105 @@
+import java.util.*;
+
+public class HomestayMain {
+public static void main(String[] args) { Scanner sc = new Scanner(System.in); List<Host> hosts = new ArrayList<>(); 
+ 
+
+List<Guest> guests = new ArrayList<>(); List<Listing> listings = new ArrayList<>();
+List<Booking> bookings = new ArrayList<>();
+
+int hostId = 1, guestId = 1, listingId = 1, bookingId = 1, paymentId = 1;
+
+while (true) {
+System.out.println("\n===== HOMESTAY BOOKING SYSTEM ====="); System.out.println("1. Add Host");
+System.out.println("2. Add Guest"); System.out.println("3. Add Listing"); System.out.println("4. Create Booking"); System.out.println("5. Record Payment"); System.out.println("6. Cancel Booking"); System.out.println("7. Add Review"); System.out.println("8. Display Availability"); System.out.println("9. Exit"); System.out.print("Enter your choice: ");
+int choice = sc.nextInt(); sc.nextLine();
+
+switch (choice) { case 1 -> {
+System.out.print("Enter Host Name: "); String name = sc.nextLine(); System.out.print("Enter Contact: "); String contact = sc.nextLine();
+hosts.add(new Host(hostId++, name, contact)); System.out.println("Host added successfully!");
+}
+
+case 2 -> {
+System.out.print("Enter Guest Name: "); String name = sc.nextLine(); System.out.print("Enter Email: "); String email = sc.nextLine();
+guests.add(new Guest(guestId++, name, email)); System.out.println("Guest added successfully!");
+}
+
+case 3 -> {
+if (hosts.isEmpty()) { System.out.println("Add a host first!"); break;
+}
+System.out.print("Enter Listing Title: "); String title = sc.nextLine(); System.out.print("Enter Price per Night: "); double price = sc.nextDouble(); sc.nextLine(); System.out.println("Available Hosts:"); 
+
+hosts.forEach(h -> System.out.println(h.getHostId() + ". " + h.getName())); System.out.print("Select Host ID: ");
+int hid = sc.nextInt();
+Host host = hosts.stream().filter(h -> h.getHostId() == hid).findFirst().orElse(null)
+
+if (host != null) {
+listings.add(new Listing(listingId++, title, price, host)); System.out.println("Listing added successfully!");
+} else System.out.println("Invalid Host ID!");
+}
+
+case 4 -> {
+if (listings.isEmpty() || guests.isEmpty()) { System.out.println("Add listings and guests first!"); break;
+}
+System.out.println("Available Listings:");
+listings.forEach(l -> System.out.println(l.getListingId() + ". " + l)); System.out.print("Select Listing ID: ");
+int lid = sc.nextInt();
+Listing listing = listings.stream().filter(l -> l.getListingId() == lid).findFirst().orElse(null); if (listing == null || !listing.isAvailable()) {
+System.out.println("Listing unavailable!"); break;
+}
+System.out.println("Guests:");
+guests.forEach(g -> System.out.println(g.getGuestId() + ". " + g.getName())); System.out.print("Select Guest ID: ");
+int gid = sc.nextInt();
+Guest guest = guests.stream().filter(g -> g.getGuestId() == gid).findFirst().orElse(null); if (guest == null) {
+System.out.println("Invalid Guest ID!"); break;
+}
+Date checkIn = new Date();
+Calendar cal = Calendar.getInstance(); cal.add(Calendar.DATE, 2);
+Date checkOut = cal.getTime();
+Booking booking = new Booking(bookingId++, listing, guest, checkIn, checkOut); listings.get(lid - 1).setAvailable(false);
+bookings.add(booking);
+System.out.println("Booking created! Amount: Rs." + booking.calculateAmount());
+}
+
+case 5 -> { System.out.println("Bookings:");
+bookings.forEach(b -> System.out.println(b.getBookingId() + ". " + b)); System.out.print("Enter Booking ID: ");
+int bid = sc.nextInt();
+Booking booking = bookings.stream().filter(b -> b.getBookingId() == bid).findFirst().orElse(null); 
+
+if (booking == null) break;
+Payment payment = new Payment(paymentId++, booking.calculateAmount()); payment.confirmPayment();
+booking.assignPayment(payment); booking.setConfirmed(true); System.out.println("Booking confirmed successfully!");
+}
+
+case 6 -> {
+System.out.print("Enter Booking ID to cancel: "); int bid = sc.nextInt();
+Booking booking = bookings.stream().filter(b -> b.getBookingId() == bid).findFirst().orElse(null); if (booking == null) break;
+Cancellation cancel = new Cancellation(booking); cancel.processCancellation();
+}
+
+case 7 -> {
+System.out.print("Enter Listing ID to review: "); int lid = sc.nextInt();
+sc.nextLine();
+Listing listing = listings.stream().filter(l -> l.getListingId() == lid).findFirst().orElse(null); if (listing == null) break;
+System.out.print("Enter Guest Name: "); String gname = sc.nextLine(); System.out.print("Enter Rating (1–5): "); int rating = sc.nextInt();
+sc.nextLine(); System.out.print("Enter Comment: "); String comment = sc.nextLine();
+Guest guest =guests.stream().filter(g->g.getName().equalsIgnoreCase(gname)).findFirst().orElse(null);
+if (guest != null) {
+Review review = new Review(guest, listing, rating, comment); listing.getReviews().add(review);
+System.out.println("Review added successfully!");
+} else System.out.println("Guest not found!");
+}
+
+case 8 -> {
+System.out.println("\n--- Listing Availability ---"); listings.forEach(System.out::println);
+}
+
+case 9 -> {
+System.out.println("Exiting System... Goodbye!"); sc.close();
+return;
+} 
+default -> System.out.println("Invalid choice!");
+}
+}
+}
+}
