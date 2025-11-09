@@ -1,0 +1,18 @@
+class Payment {
+private int paymentId;
+private double amount;
+private boolean confirmed;
+public Payment(int paymentId, double amount) {
+this.paymentId = paymentId;
+this.amount = amount;
+this.confirmed = false;
+}
+public int getPaymentId() { return paymentId; }
+public double getAmount() { return amount; }
+public boolean isConfirmed() { return confirmed; }
+public void confirmPayment() {
+717825Y504
+this.confirmed = true;
+System.out.println("Payment of Rs." + amount + " confirmed successfully.");
+}
+}
