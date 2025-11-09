@@ -1,0 +1,18 @@
+class Guest {
+private int guestId;
+private String name;
+private String email;
+public Guest(int guestId, String name, String email) {
+this.guestId = guestId;
+this.name = name;
+this.email = email;
+}
+public int getGuestId() { return guestId; }
+717825Y504
+public String getName() { return name; }
+public String getEmail() { return email; }
+@Override
+public String toString() {
+return "Guest ID: " + guestId + ", Name: " + name + ", Email: " + email;
+}
+}
