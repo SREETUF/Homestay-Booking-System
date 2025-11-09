@@ -1,0 +1,32 @@
+class Booking {
+private int bookingId;
+private Listing listing;
+private Guest guest;
+private Date checkIn;
+private Date checkOut;
+private boolean confirmed;
+private Payment payment;
+public Booking(int bookingId, Listing listing, Guest guest, Date checkIn, Date checkOut) {
+this.bookingId = bookingId;
+this.listing = listing;
+this.guest = guest;
+this.checkIn = checkIn;
+this.checkOut = checkOut;
+this.confirmed = false;
+}
+public int getBookingId() { return bookingId; }
+public Listing getListing() { return listing; }
+public Guest getGuest() { return guest; }
+public boolean isConfirmed() { return confirmed; }
+public void setConfirmed(boolean confirmed) { this.confirmed = confirmed; }
+public void assignPayment(Payment payment) { this.payment = payment; }
+public double calculateAmount() {
+long diff = (checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24);
+return diff * listing.getPricePerNight();
+}
+@Override
+public String toString() {
+return "Booking ID: " + bookingId + ", Listing: " + listing.getTitle() +
+", Guest: " + guest.getName() + ", Confirmed: " + confirmed;
+}
+}
