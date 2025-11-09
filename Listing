@@ -1,0 +1,32 @@
+class Listing {
+private int listingId;
+private String title;
+private double pricePerNight;
+private boolean available = true;
+private Host host;
+private List<Review> reviews = new ArrayList<>();
+public Listing(int listingId, String title, double pricePerNight, Host host) {
+this.listingId = listingId;
+this.title = title;
+this.pricePerNight = pricePerNight;
+this.host = host;
+}
+public int getListingId() { return listingId; }
+public String getTitle() { return title; }
+public double getPricePerNight() { return pricePerNight; }
+public boolean isAvailable() { return available; }
+public void setAvailable(boolean available) { this.available = available; }
+public Host getHost() { return host; }
+public List<Review> getReviews() { return reviews; }
+public double getAverageRating() {
+if (reviews.isEmpty()) return 0.0;
+double sum = 0;
+for (Review r : reviews) sum += r.getRating();
+return sum / reviews.size();
+}
+@Override
+public String toString() {
+return "Listing ID: " + listingId + ", Title: " + title + ", Price/Night: " + pricePerNight +
+", Available: " + available + ", Avg Rating: " + String.format("%.1f", getAverageRating());
+}
+}
